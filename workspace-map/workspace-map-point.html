@@ -1,0 +1,39 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-map/google-map-marker.html">
+<link rel="import" href="workspace-point-info.html">
+
+<!--
+`workspace-map-point`
+A map to show a collection of current locations
+
+@demo demo/index.html 
+-->
+
+<dom-module id="workspace-map-point" extends="google-map-marker">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'workspace-map-point',
+
+      properties: {
+        details: {
+          type: Object,
+          value: {}
+        }
+      },
+
+      ready: function() {
+          console.log(this.latitude + ":" + this.longitude);
+      }
+
+    });
+  </script>
+</dom-module>

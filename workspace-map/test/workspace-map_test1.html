@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>workspace-map test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../../paper-card/paper-card.html">
+    <link rel="import" href="../workspace-map.html">
+  </head>
+  <body class="fullbleed">
+      <dom-module id="test-app">
+        <template>
+            <workspace-map map-points="[[mapPoints]]" map-center="[[mapCenter]]" show-icon="/components/workspace-map/current_location.png"></workspace-map>
+        </template>
+
+        <script>
+            Polymer({
+                is: "test-app",
+
+                properties: {
+                    mapPoints: {
+                        type: Array,
+                        value: [ 
+                                {
+                                "latitude": 55.752500,
+                                "longitude": 37.792200,
+                                "name": "Test1",
+                                "attributes" : [
+                                ] },
+                                {
+                                "latitude": 55.750300,
+                                "longitude": 37.780598,
+                                "name": "Test2",
+                                "attributes" : [
+                                ] } 
+                        ] 
+                    },
+                    mapCenter: {
+                        type: Object,
+                        value: {
+                            "latitude": 55.750300,
+                            "longitude": 37.780598
+                        }
+                    }
+                },
+            });
+        </script>
+     </dom-module>
+     <test-app></test-app>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-map/google-map.html">
+<link rel="import" href="../google-map/google-map-marker.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="workspace-map-point.html">
+<link rel="import" href="workspace-point-info.html">
+
+<!--
+`workspace-map`
+A map to show a collection of current locations
+
+@demo demo/index.html 
+-->
+
+<dom-module id="workspace-map">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      google-map {
+          margin: 0;
+          height: 100vh;
+      }
+
+    </style>
+    <google-map id="map" api-key="{{apiKey}}" latitude="[[mapCenter.latitude]]" longitude="[[mapCenter.longitude]]" min-zoom="2" max-zoom="15" zoom="12">
+        <template is="dom-repeat" items="{{mapPoints}}" as="point">
+            <google-map-marker is="workspace-map-point" latitude="[[point.latitude]]" longitude="[[point.longitude]]" icon="[[showIcon]]">
+                <workspace-point-info id="my-info" name="[[point.name]]" attributes="[[point.attributes]]" actions="[[actions]]"></workspace-point-info>
+            </google-map-marker>
+        </template>
+    </google-map>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'workspace-map',
+
+      properties: {
+        apiKey: {
+          type: String,
+          value: 'AIzaSyA76lw_i08H5r4mUDOECTL5pgnVEoZ-MNI'
+        },
+        mapCenter: {
+          type: Object
+        },
+        mapPoints: {
+          type: Array,
+          observer: "_pointsChanged"
+        },
+        actions: {
+          type: Array,
+        },
+        showIcon: {
+            type: String
+        }
+      },
+
+      ready: function() {
+          console.log(this);
+      },
+
+      _pointsChanged: function() {
+
+      }
+
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,69 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../paper-button/paper-button.html">
+
+<!--
+`workspace-point-info`
+A map to show a collection of current locations
+
+@demo demo/index.html 
+-->
+
+<dom-module id="workspace-point-info">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      paper-card {
+          min-width: 100px;
+          max-width: 400px;
+          height: 100px;
+      }
+      .attribute-light { color: var(--paper-grey-600); }
+      .action-light { color: var(--google-blue-500); }
+    </style>
+    <paper-card heading="{{name}}">
+        <div class="card-content">
+            <template is="dom-repeat" items="{{attributes}}" as="attribute">
+                <div>{{attribute.name}}: <span class="attribute-light">{{attribute.value}}</span></div>
+            </template>
+        </div>
+        <template is="dom-if" if="[[_hasActions(actions)]]">
+            <div class="card-actions">
+                <div class="horizontal justified">
+                    <template is="dom-repeat" items="{{actions}}" as="action">
+                        <paper-button class="action-light">{{action.name}}</paper-button>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </paper-card>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'workspace-point-info',
+
+      properties: {
+        name: {
+          type: String,
+        },
+        actions: {
+          type: Array,
+          value: []
+        },
+        attributes: {
+            type: Array,
+            value: []
+        }
+      },
+
+      _hasActions: function(acts) {
+          return ((acts != undefined) && (acts.length != undefined) && (acts.length > 0));
+      }
+
+    });
+  </script>
+</dom-module>
