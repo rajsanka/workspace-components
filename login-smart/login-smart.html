@@ -1,0 +1,91 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-input/paper-input.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-form/iron-form.html">
+<link rel="import" href="../smart-client/smart-client.html">
+<link rel="import" href="../smart-client/smart-security.html">
+
+<!--
+`login-smart`
+A template to login into smart platform
+
+@demo demo/index.html 
+-->
+
+<dom-module id="login-smart">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <div id="msg" class="message"></div>
+    <form is="iron-form" method="post" id="loginForm">
+        <paper-input name="user" label="Enter User Id" required auto-validate></paper-input>
+        <paper-input name="password" type="password" label="Enter your Password" required auto-validate></paper-input>
+        <paper-button raised on-tap="_login" disabled id="loginSubmit"><paper-spinner id="spinner" hidden></paper-spinner>Login</paper-button>
+    </form>
+
+    <smart-security id="security" user="{{user}}" password="{{password}}" on-smart-login-success="_onLogin" on-smart-invalid-login="_handleError" on-smart-error-login="_handleError"></smart-security>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'login-smart',
+
+      properties: {
+        isLoggedIn: {
+          type: Boolean,
+          value: false,
+        },
+        user: String,
+        password: String
+      },
+
+      ready: function() {
+        var submit = this.$.loginSubmit;
+        var formlogin = this.$.loginForm;
+        var thiselem = this;
+
+        this.$.loginForm.addEventListener('change', function(event) {
+            // Validate the entire form to see if we should enable the `Submit` button.
+            submit.disabled = !formlogin.validate();
+        });
+
+        this.$.loginForm.addEventListener('iron-form-presubmit', function(event) {
+            thiselem._submitLogin();
+            return false;
+        });
+      },
+
+      _submitLogin: function() {
+            this.$.spinner.active = false;
+            this.$.spinner.hidden = true;
+            this.$.loginForm.disabled = false;
+            console.log(event.detail);
+            this.user = event.detail.user;
+            this.password = event.detail.password;
+
+            this.$.security.loginSmart();
+      },
+
+      _login: function(event) {
+            this.$.spinner.active = true;
+            this.$.spinner.hidden = false;
+            this.$.loginSubmit.disabled = true;
+            Polymer.dom(event).localTarget.parentElement.submit();
+      },
+
+      _onLogin: function(event) {
+          this.$.msg.innerHTML = "Successfully Loggedin ";
+          this.fire("login-success", { "user" : this.user });
+      },
+
+      _handleError: function(event) {
+          this.$.msg.innerHTML = "Error in User/Password. Please try again.";
+      }
+
+    });
+  </script>
+</dom-module>
