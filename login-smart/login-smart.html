@@ -1,9 +1,9 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../paper-button/paper-button.html">
-<link rel="import" href="../iron-form/iron-form.html">
-<link rel="import" href="../smart-client/smart-client.html">
-<link rel="import" href="../smart-client/smart-security.html">
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../paper-input/paper-input.html">
+<link rel="import" href="../../paper-button/paper-button.html">
+<link rel="import" href="../../iron-form/iron-form.html">
+<link rel="import" href="../../smart-client/smart-client.html">
+<link rel="import" href="../../smart-client/smart-security.html">
 
 <!--
 `login-smart`
@@ -53,7 +53,7 @@ A template to login into smart platform
             submit.disabled = !formlogin.validate();
         });
 
-        this.$.loginForm.addEventListener('iron-form-presubmit', function(event) {
+        this.$.loginForm.addEventListener('iron-form-submit', function(event) {
             thiselem._submitLogin();
             return false;
         });

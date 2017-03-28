@@ -1,7 +1,7 @@
-<link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../google-map/google-map.html">
-<link rel="import" href="../google-map/google-map-marker.html">
-<link rel="import" href="../paper-card/paper-card.html">
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../google-map/google-map.html">
+<link rel="import" href="../../google-map/google-map-marker.html">
+<link rel="import" href="../../paper-card/paper-card.html">
 <link rel="import" href="workspace-map-point.html">
 <link rel="import" href="workspace-point-info.html">
 
@@ -27,8 +27,9 @@ A map to show a collection of current locations
     </style>
     <google-map id="map" api-key="{{apiKey}}" latitude="[[mapCenter.latitude]]" longitude="[[mapCenter.longitude]]" min-zoom="2" max-zoom="15" zoom="12">
         <template is="dom-repeat" items="{{mapPoints}}" as="point">
-            <google-map-marker is="workspace-map-point" latitude="[[point.latitude]]" longitude="[[point.longitude]]" icon="[[showIcon]]">
-                <workspace-point-info id="my-info" name="[[point.name]]" attributes="[[point.attributes]]" actions="[[actions]]"></workspace-point-info>
+            <google-map-marker is="workspace-map-point" latitude="[[point.latitude]]" longitude="[[point.longitude]]" icon="[[showIcon]]" on-google-map-marker-open="openInfoWindow">
+                <!--<workspace-point-info id="my-info" name="[[point.name]]" attributes="[[point.attributes]]" actions="[[actions]]"></workspace-point-info>-->
+                <div id="insertion-[[point.name]]"> </div>
             </google-map-marker>
         </template>
     </google-map>
@@ -65,6 +66,21 @@ A map to show a collection of current locations
 
       _pointsChanged: function() {
 
+      },
+
+      openInfoWindow: function(event) {
+        console.log("Name: " + event.model.__data__.point.name);
+        console.log("Attributes: " + event.model.__data__.point.attributes);
+        console.log("Actions: " + this.actions);
+        var domBind = document.createElement('template', 'dom-bind');
+        var doc = domBind.content.ownerDocument;
+
+        var dynamicEl = document.createElement("workspace-point-info");
+        dynamicEl.setAttribute("name", event.model.__data__.point.name);
+        dynamicEl.setAttribute("attributes", JSON.stringify(event.model.__data__.point.attributes));
+        dynamicEl.setAttribute("actions", JSON.stringify(this.actions));
+        domBind.content.appendChild(dynamicEl);
+        this.$$('#insertion-' + event.model.__data__.point.name).innerHTML = domBind.innerHTML;
       }
 
     });
